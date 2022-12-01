@@ -130,7 +130,7 @@ while length(evtQueue)>0
     % Mostrado de la cola de eventos:
     fprintf('\nCola de eventos:\n');
     for i=1:length(evtQueue)
-        fprintf('Evento %s en t=%f\n',evtQueue(i).type,evtQueue(i).t);
+        fprintf('Evento %s en t=%f. Nodo Encolado: %d\n',evtQueue(i).type,evtQueue(i).t, evtQueue(i).currentNode);
     end
     fprintf('----------------\n');
     % pause;
