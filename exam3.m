@@ -56,10 +56,14 @@ end
 t=0;
 
 % Programacion del evento inicial o los eventos iniciales.
+initNode = 9;
+destNode = 17;
 evt.t = 0;
 evt.type = 'A';
-evt.currentNode = 9;
-destNode = 17;
+evt.currentNode = initNode;
+evt.prevNode = 0;
+sp_trace = Inf(30, 1);
+
 nodesStatus = zeros(30, 1);
 nodesStatus(evt.currentNode) = 1;
 
@@ -79,6 +83,7 @@ while length(evtQueue)>0
         x=nodesCoordinates(evtAct.currentNode,1);
         y=nodesCoordinates(evtAct.currentNode,2);
         plot(x, y, 'o', 'LineWidth',1,'MarkerEdgeColor','b', 'MarkerFaceColor','b', 'MarkerSize',7)
+        sp_trace(evtAct.currentNode) = evtAct.prevNode;
         if evtAct.currentNode == destNode
             break;
         end
@@ -89,6 +94,7 @@ while length(evtQueue)>0
                   newEvt.t = matrLinks(evtAct.currentNode, i) * 3.333;
                   newEvt.type = 'A';
                   newEvt.currentNode = i;
+                  newEvt.prevNode = evtAct.currentNode;
                   nodesStatus(i) = 1;
                   evtQueue = [evtQueue newEvt];
             end
@@ -135,16 +141,16 @@ fprintf('Tiempo transcurrido: %f  \n',t);
 
 % [p, D, iter] = BFMSpathOT(matrLinks, 9);
 
-%i = 17;
-%for j=1:length(p)
-%     x=nodesCoordinates(i,1);
-%     y=nodesCoordinates(i,2);
-%     plot(x, y, 'o', 'LineWidth',1,'MarkerEdgeColor','r', 'MarkerFaceColor','r', 'MarkerSize',7)
-%     if (i == 9)
-%         break;
-%     end
-%     i = p(i);
-%end
+i = destNode;
+for j=1:length(sp_trace)
+     x=nodesCoordinates(i,1);
+     y=nodesCoordinates(i,2);
+     plot(x, y, 'o', 'LineWidth',1,'MarkerEdgeColor','r', 'MarkerFaceColor','r', 'MarkerSize',7)
+     if (i == initNode)
+         break;
+     end
+     i = sp_trace(i);
+end
 
 % ====================================================================
 function [p,D,iter] = BFMSpathOT(G,r)
