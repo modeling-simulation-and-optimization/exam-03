@@ -1,3 +1,11 @@
+%{
+    Exam 3
+
+    Made by:
+    Juan Andrés Romero C - 202013449
+    Juan Sebastián Alegría - 202011282
+%}
+
 clc, clear all, close all
 
 %% Inicio Graficar Nodos
