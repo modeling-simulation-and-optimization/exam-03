@@ -53,7 +53,6 @@ for i = 1:length(nodesCoordinates)
     plot(nodesCoordinates(i, 1), nodesCoordinates(i, 2), 'o', 'LineWidth', 1, 'MarkerEdgeColor', 'k', 'MarkerFaceColor', 'k', 'MarkerSize', 7);
     text(x + 1, y + 0.5, num2str(i), 'FontSize', 8, 'FontWeight', 'bold', 'Color', 'k');
     title('Red Celular')
-    % axis([0 110 0 60])
 end
 
 %% End - Plot nodes
@@ -71,7 +70,7 @@ evt.t = 0;
 evt.type = 'A';
 evt.currentNode = initNode;
 evt.prevNode = 0;
-sp_trace = Inf(30, 1);
+sp_trace = Inf(30, 2);
 
 nodesStatus = zeros(30, 1);
 nodesStatus(evt.currentNode) = 1;
@@ -91,7 +90,8 @@ while length(evtQueue) > 0
         x = nodesCoordinates(evtAct.currentNode, 1);
         y = nodesCoordinates(evtAct.currentNode, 2);
         plot(x, y, 'o', 'LineWidth', 1, 'MarkerEdgeColor', 'b', 'MarkerFaceColor', 'b', 'MarkerSize', 7)
-        sp_trace(evtAct.currentNode) = evtAct.prevNode;
+        sp_trace(evtAct.currentNode, 1) = evtAct.prevNode;
+        sp_trace(evtAct.currentNode, 2) = evtAct.t;
 
         if evtAct.currentNode == destNode
             break;
@@ -109,16 +109,6 @@ while length(evtQueue) > 0
             end
 
         end
-
-    end
-
-    % Event B processing
-    if evtAct.type == 'B'
-
-    end
-
-    % Event Z processing
-    if evtAct.type == 'Z'
 
     end
 
@@ -152,11 +142,8 @@ while length(evtQueue) > 0
     % pause;
 end
 
-fprintf('Tiempo transcurrido: %f  \n', t);
-
-% [p, D, iter] = BFMSpathOT(matrLinks, 9);
-
 i = destNode;
+totalTime = 0;
 
 for j = 1:length(sp_trace)
     x = nodesCoordinates(i, 1);
@@ -167,5 +154,8 @@ for j = 1:length(sp_trace)
         break;
     end
 
-    i = sp_trace(i);
+    totalTime = totalTime + sp_trace(i, 2);
+    i = sp_trace(i, 1);
 end
+
+fprintf('Tiempo total de recorrido: %f nanosegundos\n', totalTime)
