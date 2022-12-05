@@ -8,8 +8,8 @@
 
 clc, clear all, close all
 
-%% Inicio Graficar Nodos
-% Posiciones de los nodos---------------------------------------------------
+%% Start - Plot nodes
+% Node position---------------------------------------------------
 nodesCoordinates = zeros(30, 2);
 nodesCoordinates(1, 1) = 34; nodesCoordinates(1, 2) = 14; nodesCoordinates(2, 1) = 34; nodesCoordinates(2, 2) = 10;
 nodesCoordinates(3, 1) = 24; nodesCoordinates(3, 2) = 38; nodesCoordinates(4, 1) = 2; nodesCoordinates(4, 2) = 3;
@@ -27,16 +27,14 @@ nodesCoordinates(25, 1) = 22; nodesCoordinates(25, 2) = 39; nodesCoordinates(26,
 nodesCoordinates(27, 1) = 38; nodesCoordinates(27, 2) = 3; nodesCoordinates(28, 1) = 12; nodesCoordinates(28, 2) = 24;
 nodesCoordinates(29, 1) = 9; nodesCoordinates(29, 2) = 26; nodesCoordinates(30, 1) = 32; nodesCoordinates(30, 2) = 21;
 
-RC = 10; % Radio de cobertura
+RC = 10; % Coverage radius
 
 for i = 1:length(nodesCoordinates)
 
     for j = 1:length(nodesCoordinates)
-
         dij = sqrt((nodesCoordinates(i, 1) - nodesCoordinates(j, 1)) ^ 2 + (nodesCoordinates(i, 2) - nodesCoordinates(j, 2)) ^ 2);
 
         if (dij <= RC) & i ~= j
-
             matrLinks(i, j) = dij;
 
             line([nodesCoordinates(i, 1), nodesCoordinates(j, 1)], [nodesCoordinates(i, 2), nodesCoordinates(j, 2)], 'LineStyle', ':', 'Color', 'k', 'LineWidth', 1);
@@ -58,15 +56,15 @@ for i = 1:length(nodesCoordinates)
     % axis([0 110 0 60])
 end
 
-%% Fin Graficar Nodos
+%% End - Plot nodes
 
-%% SIMULADOR DE EVENTOS DISCRETOS
-% Inicializacion de variables
+%% Discrete Event Simulator
+% Variable initialization
 
-% Inicialización del tiempo de simulación
+% Simulation time initialization
 t = 0;
 
-% Programacion del evento inicial o los eventos iniciales.
+% Programming of the initial event or initial events
 initNode = 9;
 destNode = 17;
 evt.t = 0;
@@ -78,18 +76,17 @@ sp_trace = Inf(30, 1);
 nodesStatus = zeros(30, 1);
 nodesStatus(evt.currentNode) = 1;
 
-% Adiciono el evento inicial o los eventos iniciales a la cola de eventos.
-
+% Add of the initial event or initial events to the event queue
 evtQueue = [evt];
 
-% Desarrollo de la simulación
+% Simulation development
 while length(evtQueue) > 0
     evtAct = evtQueue(1);
     evtQueue(1) = [];
 
     t = evtAct.t;
 
-    % Procesamiento del evento A
+    % Event A processing
     if evtAct.type == 'A'
         x = nodesCoordinates(evtAct.currentNode, 1);
         y = nodesCoordinates(evtAct.currentNode, 2);
@@ -115,17 +112,17 @@ while length(evtQueue) > 0
 
     end
 
-    % Procesamiento del evento B
+    % Event B processing
     if evtAct.type == 'B'
 
     end
 
-    % Procesamiento del evento Z
+    % Event Z processing
     if evtAct.type == 'Z'
 
     end
 
-    % Organizacion de la cola de eventos
+    % Event queue organization
     flag = 1;
 
     while flag == 1
@@ -144,7 +141,7 @@ while length(evtQueue) > 0
 
     end
 
-    % Mostrado de la cola de eventos:
+    % Event queue display
     fprintf('\nCola de eventos:\n');
 
     for i = 1:length(evtQueue)
